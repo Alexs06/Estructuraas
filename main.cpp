@@ -44,13 +44,16 @@ void desplegarMenu(){
 			"13-Lista de todos los vertices del grafo\n"
 			
 			"\nALGORITMOS\n" //Algoritmos 
-			"14_Dijkstra\n"
-			"15_Floyd\n"
-			"16_Prim\n"
-			"17_Kruskal\n"
-			"18_Copiar un grafo\n"
-			"19_Grafos iguales?\n"
+			
+			
+			"14_Prim\n"
+			"15_Kruskal\n"
+			"16_Copiar un grafo\n"
+			"17_Grafos iguales?\n"
+			"18_Eliminar Vertice no aislado\n"
+			"19_Listar etiquetas en profundidad primero\n"
 			"20_Problema del vendedor\n"
+			"21_Coloreo\n"
 			"\n0-Salir del programa\n\n";	
 }
 	
@@ -91,10 +94,10 @@ int main() {
 			case 2:{//Preguntar si está vacío
 				bool answer = g.vacio();
 				if(answer){
-					cout << "------------El grafo esta vacio\n\n";
+					cout << "------------El arbol esta vacio\n\n";
 				}
 				else{
-					cout << "------------El grafo no esta vacio\n\n";
+					cout << "------------El arbol no esta vacio\n\n";
 				}
 			}
 			break;
@@ -254,44 +257,50 @@ int main() {
 				
 			}
 			break;
-			//------Tener un grafo predeterminado para probar los de abajo
-			case 14:{//Dijkstra
-				algoritmo.dijkstra(g);
-			}
-			break;
-			case 15:{//Floyd
-				
-			}
-			break;
-			case 16:{//Prim
+			//
+			case 14:{//Prim
 				algoritmo.prim(g);
+			}
+			break;
+			
+			case 15:{//Kruskal
+				algoritmo.kruskal(g);
 				
 			}
 			break;
-			case 17:{//Kruskal
-				algoritmo.kruskal(g,gCopia);
-				
-			}
-			break;
-			case 18:{//Copiar un grafo a gCopia
+			case 16:{//CopiarGrafo
 				algoritmo.copiarGrafo(g,gCopia);
 				cout << "------------Grafo principal copiado a grafoCopia\n\n";
 			}
 			break;
-			case 19:{//Grafos iguales entre el original y gCopia
-				bool iguales = algoritmo.iguales(g,gCopia);
-				if(iguales){
+			case 17:{//Grafos iguales
+				
+				bool iguales = algoritmo.iguales(g, gCopia);
+				if (iguales) {
 					cout << "------------El grafo principal y la copia son igueles\n\n";
 				}
-				else{
+				else {
 					cout << "------------El grafo principal y la copia NO son iguales\n\n";
 				}
 			}
 			break;
-			case 20:{//Problema del vendedor
-				algoritmo.problemaVendedor(g);
+			case 18:{//Eliminar Vertice no aislado
+				
 			}
 			break;
+			case 19:{//Lista etiquetas profundidad primero
+				//algoritmo.(g);
+			}
+			break;
+
+			case 20: {//Problema del vendedor
+				algoritmo.problemaVendedor(g);
+			}
+					 break;
+			case 21: {//coloreo
+				//algoritmo.coloreo(g);
+			}
+					 break;
 			
 			case 0:{
 				cout << "---------------Ha salido correctamente del programa---------------\n";
