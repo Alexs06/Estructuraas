@@ -285,11 +285,15 @@ int main() {
 			}
 			break;
 			case 18:{//Eliminar Vertice no aislado
+				tipoVertice vertice;
+				cout << "Digite el vertice a eliminar" << endl;
+				cin >> vertice;
+				algoritmo.eliminarVerticeNoAislado(g, vertice);
 				
 			}
 			break;
 			case 19:{//Lista etiquetas profundidad primero
-				//algoritmo.(g);
+				algoritmo.recorridoEnProfundidad(g);
 			}
 			break;
 
