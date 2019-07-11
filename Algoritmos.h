@@ -1,5 +1,5 @@
-#ifndef Alg_2017
-#define Alg_2017
+#ifndef Alg
+#define Alg
 #include <vector>
 #include <cstdlib>
 #include <iostream>
@@ -62,7 +62,6 @@ class Algoritmos {
 		int encontrarMinimo(int tam, vector<bool>& v, vector<int> d);
 		void dijkstra(Grafo&);
 		int pesoMinimo(int[],bool[],int);
-		void floyd(Grafo&); //yo
 		void prim(Grafo&);
 		void problemaVendedor(Grafo&); //listo :)
 		void asignarArista(tipoVertice); 
@@ -72,6 +71,8 @@ class Algoritmos {
 		void recorridoEnProfundidadR(tipoVertice,Grafo&);
 		void eliminarVerticeNoAislado(Grafo&,tipoVertice);
 		bool iguales(Grafo, Grafo);
+		void kruskal(Grafo g1, Grafo g2);
+		tipoVertice BuscarEtiqueta(string, Grafo& g);
 
 
 };

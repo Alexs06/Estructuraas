@@ -4,12 +4,15 @@
 #include "GrafoND.h"
 #include "GrafoMatriz.h"
 #include <list>
+#include <String>
+
 using namespace std;
 typedef int tipoVertice;
 typedef GrafoMatriz Grafo;
 //Variables globales
 	Grafo* g;
 	Diccionario<tipoVertice> d;
+
 	string* solucionFinal;
 	string* solucionActual;
 	int costoFinal;
@@ -57,6 +60,7 @@ bool Algoritmos::Tripleta::operator=(Tripleta t1){
 	usado = t1.usado;
 	verticeMasCercano = t1.verticeMasCercano;
 	distancia = t1.distancia;
+	return true;
 }
 
 //constructor por defecto de una terna
@@ -88,85 +92,8 @@ bool Algoritmos::Terna:: operator==(Terna& terna2){
 }
 
 void Algoritmos::dijkstra(Grafo& g){
-	/*Relacion<tipoVertice,Tripleta> relacion;
-	
-	Tripleta tripleta;
-	
-	tipoVertice v = g.primerVertice();
-	for(int i = 0; i < g.numVertices(); ++i){
-		relacion.agregarRelacion(v,Tripleta());
-		v = g.siguienteVertice(v);
-	}
 	
 	
-	tipoVertice v1 = g.primerVertice();
-	Tripleta trip4 = relacion.imagen(v1);
-	trip4.distancia = 0;
-	trip4.usado = false;
-	relacion.modificarImagen(v1,relacion.imagen(v1),trip4);
-	
-	tipoVertice vertice;
-	Tripleta trip;
-	for(int contador = 0; contador < g.numVertices(); ++contador){
-		vertice = relacion.minimoEnCodominio();
-		cout << "El vertice minimo es " << vertice<<endl;
-		trip = relacion.imagen(vertice);
-		trip.usado = true;
-		relacion.modificarImagen(vertice,relacion.imagen(vertice),trip);
-		tipoVertice vortex = g.primerVertice();
-		for(int x = 0 ; x < g.numVertices(); ++x){
-			Tripleta trip3 = relacion.imagen(vortex);
-			if(trip3.usado == false && g.adyacentes(vertice,vortex) && trip.distancia != INT_MAX &&
-			    trip.distancia + g.peso(vertice,vortex) < trip3.distancia){
-					Tripleta trip2 = relacion.imagen(vortex);
-					trip2.distancia = trip.distancia + g.peso(vertice,vortex);
-					relacion.modificarImagen(vortex,relacion.imagen(vortex),trip2);
-				}
-			vortex = g.siguienteVertice(vortex);	
-		}
-	}
-	relacion.imprimir();*/
-	
-	
-	int arbol[g.numVertices()];
-	int llave[g.numVertices()];
-	bool verticesIncluidos[g.numVertices()];
-	tipoVertice vectorVertices[g.numVertices()];
-	
-	tipoVertice v = g.primerVertice();
-	for(int i = 0; i < g.numVertices(); ++i){           //Llenar un vector con los vertices del grafo
-		vectorVertices[i] = v;
-		v = g.siguienteVertice(v);
-	}
-	
-	for(int j = 0; j < g.numVertices(); ++j){
-		llave[j] = INT_MAX;  //Infinito
-		verticesIncluidos[j] = false;
-	}
-	
-	llave[0] = 0; //El primer vertice siempre se incluye
-	arbol[0] = -1; //Primer nodo es raiz del arbol
-	
-	for (int count = 0; count < g.numVertices()-1; count++){
-		int u = pesoMinimo(llave,verticesIncluidos, g.numVertices());
-		verticesIncluidos[u] = true;
-		for(int x = 0 ; x < g.numVertices() ; ++x){
-       
-         if (!verticesIncluidos[x] && g.adyacentes(vectorVertices[u],vectorVertices[x]) && llave[u] != INT_MAX 
-                                       && llave[u]+ g.peso(vectorVertices[u],vectorVertices[x]) < llave[x]){
-            llave[x] = llave[u] + g.peso(vectorVertices[u],vectorVertices[x]);
-		 }	
-         }
-	}
-	
-	cout<<"Vertice   Distancia"<<endl;
-   for (int c = 0; c < g.numVertices(); ++c){
-	  tipoVertice t = vectorVertices[c];
-      cout<< g.etiqueta(t) <<"              "<<llave[c]<<endl;
-   }
-	
-	
-
 }	
 
 int Algoritmos::pesoMinimo(int dist[], bool sptSet[], int iterar){
@@ -179,88 +106,10 @@ int Algoritmos::pesoMinimo(int dist[], bool sptSet[], int iterar){
    return min_index;
 }
 
-void Algoritmos::floyd(Grafo& g){
-	//Paso 1 Crear matriz de Costos, matriz de Vertices y relacion 1 a 1 entre indices y etiquetas
-	int totalVertices = g.numVertices();
-	
-	string ** matrizVertices = new string *[totalVertices]; //Contiene el vertice intermedio
-	int ** matrizCostos = new int *[totalVertices]; 		//Costo minimo entre cada par de vertices
-	string * relacion1a1 = new string[totalVertices];		//Asocia indices de un arreglo con etiquetas de vertices
-	
-	tipoVertice v = g.primerVertice();
-	for(int i = 0; i < totalVertices; ++i){
-		matrizVertices[i] = new string[totalVertices];
-		matrizCostos[i] = new int[totalVertices];
-		relacion1a1[i] = g.etiqueta(v);
-		v = g.siguienteVertice(v);
-	}
-	
-	//Paso 2 Llenar las matrices con los valores iniciales
-	for(int i = 0; i < totalVertices; ++i){
-		for(int j = 0; j < totalVertices; ++j){
-			if(i==j){//Se aisla el caso donde pregunta por loops
-				matrizCostos[i][j] = 0;
-				matrizVertices[i][j] = "-";
-			}
-			else{//Si el vertice en [i] es adyacente con el vertice en [j] 
-				if(g.adyacentes(g.recuperarVertice(relacion1a1[i]),g.recuperarVertice(relacion1a1[j]))){
-					matrizCostos[i][j] = g.peso(g.recuperarVertice(relacion1a1[i]),g.recuperarVertice(relacion1a1[j]));
-					matrizVertices[i][j] = relacion1a1[j];
-				}
-				else{//Si no hay arista
-					matrizCostos[i][j] = INT_MAX;
-					matrizVertices[i][j] = "-";
-				}
-			}
-		}
-	}
-	
-	//Paso 3 Encontrar los caminos más cortos
-	for(int k = 0; k < totalVertices; ++k){
-		for(int i = 0; i < totalVertices; ++i){
-			for(int j = 0; j < totalVertices; ++j){
-				if(matrizCostos[i][j] > matrizCostos[i][k] + matrizCostos[k][j]){
-					matrizCostos[i][j] = matrizCostos[i][k] + matrizCostos[k][j];
-					matrizVertices[i][j] = relacion1a1[k];
-				}
-			}
-		}
-	}
-	cout << "La matriz está indexada de la siguiente forma: \n";
-	for(int i = 0; i < totalVertices; ++i){
-		cout << i+1 << " = " << relacion1a1[i] << endl;
-	}
-	cout << endl;
-	//imprimir matrizCostos
-	cout << "\nMatriz de Costos\n";
-	for(int i = 0; i < totalVertices; ++i){
-		for(int j = 0; j < totalVertices; ++j){
-			if(matrizCostos[i][j] == INT_MAX){
-				cout << "-" << " ";
-			}
-			else{
-				cout << matrizCostos[i][j] << " ";
-			}
-			
-		}
-		cout << endl;
-	}
-	
-	//imprimir matrizVertices
-	cout << "\nMatriz de Vertices intermedios\n";
-	for(int i = 0; i < totalVertices; ++i){
-		for(int j = 0; j < totalVertices; ++j){
-			cout << matrizVertices[i][j] << " " ;
-		}
-		cout << endl;
-	}
-	cout << endl;
-
-}
-
 void Algoritmos::prim(Grafo& grafo){
-	string arregloEtiquetas[grafo.numVertices()];
-    bool modificado[grafo.numVertices()];
+	int nVert = grafo.numVertices();
+	string * arregloEtiquetas = new string[grafo.numVertices() ];
+    bool * modificado = new bool[grafo.numVertices()];
     Grafo minCosto;
     vector<int> distancias;
     vector<bool> visitado;
@@ -269,8 +118,8 @@ void Algoritmos::prim(Grafo& grafo){
     distancias.resize(n);
     visitado.resize(n);
     int pivote;
-    map <int, tipoVertice> R11MinCosto;
-    map <int, tipoVertice> R11;
+    Relacion<tipoVertice> R11MinCosto;
+	Relacion<tipoVertice> R11;
     pair<int, tipoVertice> p;
     pair<int, tipoVertice> p2;
     tipoVertice v = grafo.primerVertice();
@@ -294,7 +143,7 @@ void Algoritmos::prim(Grafo& grafo){
         else{
             distancias[i] = INT_MAX;
         }
-        modificado[i] == false;
+        modificado[i] = false;
     }
     for(int i = 1; i <= n -1; i++){
         pivote = encontrarMinimo(n, visitado, distancias);
@@ -364,33 +213,42 @@ void Algoritmos::problemaVendedor(Grafo& graf){
 	dicc.vaciar();
 }
 
+
 void Algoritmos::copiarGrafo(Grafo& g,Grafo& g2){
-	tipoVertice v = g.primerVertice();
-    map <tipoVertice, tipoVertice> m;
-    tipoVertice vn;
-    pair <tipoVertice, tipoVertice> p;
-    while(v != 0){
-        vn = g2.agregarVertice(g.etiqueta(v));
-        p = std::make_pair(v, vn);
-        m.insert(p);
-        v = g.siguienteVertice(v);
-    }
-     v = g.primerVertice();
-    tipoVertice va;
-    tipoVertice vna;
-    while(v != 0){
-        if(g.numVerticesAdyacentes(v) != 0){
-        va = g.primerVerticeAdyacente(v);
-        while(va != 0){
-            vn = m.at(v);
-            vna = m.at(va);
-           g2.agregarArista(vn, vna, g.peso(v, va));;
-           va = g.siguienteVerticeAdyacente(v, va);
-        }
-        }
-        v = g.siguienteVertice(v);
-    }
+	g2.vaciar();
+	Relacion<tipoVertice> r11;
+	Relacion<tipoVertice> r12;
+			if (!g.vacio()) {
+				d.vaciar();
+
+				tipoVertice vp1 = g.primerVertice();
+				tipoVertice vp2 = g2.agregarVertice(g2.etiqueta(vp1));
+				int ind = 0;
+					r11.agregarRelacion(ind, vp1);
+					r12.agregarRelacion(ind, vp2);
+					ind++;
+					tipoVertice v1 = g.siguienteVertice(vp1);
+					while (v1 != 0) {
+						tipoVertice v2 = g2.agregarVertice(g.etiqueta(v1));//Creo todos los vertices y la R11
+						r11.agregarRelacion(ind, v1);
+						r12.agregarRelacion(ind, v2);
+
+					}
+						//Luego debo crear cada arista
+					
+							while (vp1 != 0) {
+								tipoVertice va = g.primerVerticeAdyacente(vp1);//Me muevo por sus adyacentes
+									while (va != 0) {
+										int peso = g.peso(vp1, va);
+										g2.agregarArista(r11.imagen(vp1), r11.imagen(va), peso);
+										va = g.siguienteVerticeAdyacente(vp1, va);
+									}
+									vp1 = g.siguienteVertice(vp1);
+							}
+			}
 }
+
+
 
 void Algoritmos::asignarArista(tipoVertice v){
 	
@@ -443,66 +301,67 @@ correspondientes y los mismos vertices
 Modifica: no modifica nada
 */
 bool Algoritmos::iguales(Grafo g1, Grafo g2){
-bool igualdad=true;
-tipoVertice v1;
-tipoVertice v2;
-tipoVertice vAdy1;
-tipoVertice vAdy2;
-
-//primero pregunto por el tama;o de ambos grafos, ya que si el tama;o es diferentes jamas seran iguales
-if(g1.numVertices()!=g2.numVertices()){
-	igualdad=false;
-}
-//en caso de que si sean del mismo tama;o, tengo que empezar a fijarme, en que tengan los mismos vertices, que tengan la misma
-//cantidad de vertices adyacentes y en que el peso de las aristas sea el mismo
-else{
-v1=g1.primerVertice();
-
-while(v1!=verticeNulo && igualdad){
-	v2=g2.recuperarVertice(g1.etiqueta(v1));
-	
-	//en caso de no encontrar el mismo vertice del grafo 1 en el grafo 2, entonces los grafos son diferentes
-	if(v2==verticeNulo){
-		igualdad=false;
-	}
-	//en caso de que si encuentra el vertice del grafo 1 en el grafo 2
-	else{
-		//pregunto por la cantidad de vertices adyacentes de v1 y v2, que son los mismos vertices en diferentes grafos
-		if(g1.numVerticesAdyacentes(v1)==g2.numVerticesAdyacentes(v2)){
-			vAdy1=g1.primerVerticeAdyacente(v1);
-			vAdy2=g2.primerVerticeAdyacente(v2);
+	bool sonIgual = false;
+		if(g1.numVertices() != g2.numVertices()) {
+			return sonIgual;
+		}
+		else {
+			sonIgual = true;
+			Relacion<tipoVertice> R11;
+			tipoVertice v1 = g1.primerVertice();
+				while (v1 != verticeNulo && sonIgual){
+					tipoVertice v2 = BuscarEtiqueta(g1.etiqueta(v1), g2);
+						if (v2 != verticeNulo){
+						if( g1.numVerticesAdyacentes(v1) == g2.numVerticesAdyacentes(v2)) {
+							R11.agregarRelacion(v1, v2);
+							v1 = g1.siguienteVertice(v1);
+						}
+						else {
+							sonIgual = false;
+						}
+						}
+						else {
+							sonIgual = false;
+						}
+				}
+			if (sonIgual){
+				v1 = g1.primerVertice();
+			while (v1 != verticeNulo && sonIgual) {
+				tipoVertice va1 = g1.primerVerticeAdyacente(v1);
+			while (va1 != verticeNulo && sonIgual) {
+				//if (g2.existeArista(R11.imagen(v1),R11.imagen(va1))) {
+					if (g1.peso(v1,va1) != g2.peso(R11.imagen(v1),R11.imagen(va1))) {
+						sonIgual = false;
+					}
+					else {
+						va1 = g1.siguienteVerticeAdyacente(v1, va1);
+					}
+				}
+				//else {
 			
-			//me voy moviendo por todos los vertices adyacentes al vertice del grafo 1 mientras no llegue a nulo y mientras ambos grafos sigan siendo iguales
-			while(vAdy1!=verticeNulo && igualdad){
-				//me voy moviendo por los vertices adyacentes del vertice del grafo 2 a ver si encuentro uno que sea igual a vAdy1
-			 while(vAdy2!=verticeNulo || g2.etiqueta(vAdy2)!=g1.etiqueta(vAdy1)){
-				 vAdy2=g2.siguienteVerticeAdyacente(v2,vAdy2);
-				 
-			 }
-			 
-			 //cuando se sale del while puede ser porque no encontro un vertice con la misma etiqueta o porque lo encontro
-			 if(vAdy2==verticeNulo){
-				 
-				 igualdad=false;
-			 }else{
-				 //aqui significa que si encontro vertices adyacentes iguales del vertices con la misma etiqueta en ambos grafos,
-				 //entonces tengo que fijarme si los pesos de las aristas son iguales
-				 if(g1.peso(v1,vAdy1)!=g2.peso(v2,vAdy2)){
-					 
-					 igualdad=false;
-				 }
-				 
-			 }
-			 vAdy1=g1.siguienteVerticeAdyacente(v1,vAdy1);
+				 sonIgual = false;
+				//}
+			}
+			v1 = g1.siguienteVertice(v1);
+			//}
+			}
+				
+		}
+		return(sonIgual);
+	}
+	
+tipoVertice Algoritmos::BuscarEtiqueta(string e,Grafo& g) {
+	
+	tipoVertice v = g.primerVertice();
+		while (v != verticeNulo) {
+			if (e == g.etiqueta(v)) {
+				return v;
+			}
+			else {
+				v = g.siguienteVertice(v);
 			}
 		}
-	}
-v1=g1.siguienteVertice(v1);	
-}	
-	
-}
-
-return igualdad;
+		return verticeNulo;
 }
 
 /*Requiere: grafo inicializado y vertice que exista en el grafo
@@ -596,6 +455,10 @@ void Algoritmos::recorridoEnProfundidadR(tipoVertice vertice,Grafo& grafo){
 		vertAdy=grafo.siguienteVerticeAdyacente(vertice, vertAdy);
 		
 	}
+	
+}
+
+void Algoritmos::kruskal(Grafo g1, Grafo g2) {
 	
 }
 

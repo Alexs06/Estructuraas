@@ -31,7 +31,6 @@ class Diccionario{
 				
 			
 		};
-	
 	public:
 		Diccionario(){
 			primero = 0;

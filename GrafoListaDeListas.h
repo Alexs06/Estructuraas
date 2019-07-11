@@ -5,10 +5,8 @@
  */
 
 /* 
- * File:   GrafoListaDeListas.h
- * Author: Pabos95
  *
- * Created on 7 de noviembre de 2017, 01:59 PM
+
  */
 
 #ifndef GRAFOLISTADELISTAS_H

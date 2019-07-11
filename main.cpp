@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include <utility>
+#include <String>
 
 /*
 #include "GrafoListaDeListas.h"
@@ -90,10 +91,10 @@ int main() {
 			case 2:{//Preguntar si está vacío
 				bool answer = g.vacio();
 				if(answer){
-					cout << "------------El arbol esta vacio\n\n";
+					cout << "------------El grafo esta vacio\n\n";
 				}
 				else{
-					cout << "------------El arbol no esta vacio\n\n";
+					cout << "------------El grafo no esta vacio\n\n";
 				}
 			}
 			break;
@@ -259,15 +260,17 @@ int main() {
 			}
 			break;
 			case 15:{//Floyd
-				algoritmo.floyd(g);
+				
 			}
 			break;
 			case 16:{//Prim
 				algoritmo.prim(g);
+				
 			}
 			break;
 			case 17:{//Kruskal
-				algoritmo.kruskal(g);
+				algoritmo.kruskal(g,gCopia);
+				
 			}
 			break;
 			case 18:{//Copiar un grafo a gCopia
@@ -276,7 +279,7 @@ int main() {
 			}
 			break;
 			case 19:{//Grafos iguales entre el original y gCopia
-				bool iguales = algoritmo.grafosIguales(g,gCopia);
+				bool iguales = algoritmo.iguales(g,gCopia);
 				if(iguales){
 					cout << "------------El grafo principal y la copia son igueles\n\n";
 				}

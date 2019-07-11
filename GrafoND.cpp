@@ -21,6 +21,7 @@ bool GrafoND::vacio(){
 
 int GrafoND::agregarVertice(string e){
 	grafo->agregarVertice(e);
+	return 1;
 }
 
 void GrafoND::eliminarVertice(int v){
@@ -49,6 +50,7 @@ int GrafoND::siguienteVertice(int v){
 
 int GrafoND::siguienteVerticeAdyacente(int v, int n){
 	grafo->siguienteVerticeAdyacente(v,n);
+	return 2;
 }
 
 void GrafoND::modificarEtiqueta(int v, string e){

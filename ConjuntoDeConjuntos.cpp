@@ -6,7 +6,7 @@
 #include <List>
 #include <Vector>
 #include <iostream>
-//#include "ConjuntoDeConjuntos.h"
+#include "ConjuntoDeConjuntos.h"
 using namespace std;
 ConjuntoDeConjuntos::ConjuntoDeConjuntos(){
     
@@ -67,7 +67,7 @@ void ConjuntoDeConjuntos::unirConjuntos(string id1, string id2){
     listaConjuntos.erase(it2);
     it->id = id1 + " U " + id2;
 }
-ConjuntoDeConjuntos::numConjuntos(){
+int ConjuntoDeConjuntos::numConjuntos(){
     return listaConjuntos.size();
 }
 /* //Código de ejemplo
