@@ -102,23 +102,62 @@ int Algoritmos::pesoMinimo(int dist[], bool sptSet[], int iterar){
    return min_index;
 }
 
-void Algoritmos::prim(Grafo& grafo){
-	
-}
+void Algoritmos::prim(Grafo& G){
+	vector<int> distancias;
+		if (!G.vacio()) {
+			Relacion<tipoVertice> R11;
+			d.vaciar();
+			int cont = 1;
+			R11.agregarRelacion(G.primerVertice(), cont);
+			tipoVertice va = G.primerVertice();
+			for (int i = 1; i <= G.numVertices() - 1;i++) {
+				cont++;
+				va = G.siguienteVertice(va);
+				R11.agregarRelacion(va, cont);
 
-int Algoritmos::encontrarMinimo(int tam, vector<bool>& v, vector<int> d){ //metodo auxiliar para el algoritmo de Prim
-    int posPivote = -1;
-    int valorMinimo = INT_MAX;
-    for(int i = 1; i <= tam -1; i++){
-        if(v[i] == false){
-        if(d[i] < valorMinimo){
-            valorMinimo = d[i];
-            posPivote = i;
-        }
-    }
-    }
-    v[posPivote] = true;
-    return posPivote;
+					if (existeArista(G.primerVertice(), va,G)) {
+						distancias[i] = G.peso(G.primerVertice(), va);
+						//A2[i] = G.etiqueta(G.primerVertice());
+					}
+					else {
+						distancias[i] = INT_MAX;
+						//A2[i] = G.etiqueta(G.primerVertice());
+					}
+			}
+			d.agregar(G.primerVertice());
+			int pivote = encontrarMinimo(distancias, d, R11);
+				cont = 1;
+				while (cont <= G.numVertices() - 1){
+				for(int j = 1; j<= G.numVertices() - 1; j++){
+					va = R11.imagen(pivote);
+					d.agregar(va);
+						if (!d.pertenece(R11.preimagen(j))) {
+							if (existeArista(va, R11.preimagen(j),G)) {
+								int peso = G.peso(va, R11.preimagen(j));
+									if (peso < distancias[R11.imagen(va)]) {
+										distancias[R11.imagen(va)] = peso;
+										//A2[R11.Imagen(va)] = G.etiqueta(va);
+									}
+							}
+						}
+						pivote = encontrarMinimo(distancias, d, R11);
+						cont++;
+				}
+			}
+	
+		}
+
+}
+int Algoritmos::encontrarMinimo(vector<int> di, Diccionario<tipoVertice> dicc, Relacion<tipoVertice> r){ //metodo auxiliar para el algoritmo de Prim
+	int m = INT_MAX;
+	for (int i = 0; i < di.size();i++) {
+		if (!dicc.pertenece(r.preimagen(i))) {
+			if (m >= di[i]) {
+				m = di[i];
+			}
+		}
+	}
+		return m;
 }
 
 void Algoritmos::problemaVendedor(Grafo& graf){
@@ -394,7 +433,7 @@ void Algoritmos::recorridoEnProfundidadR(tipoVertice vertice,Grafo& grafo){
 	
 }
 
-void Algoritmos::kruskal(Grafo g1, Grafo g2) {
+void Algoritmos::kruskal(Grafo g1) {
 	
 }
 

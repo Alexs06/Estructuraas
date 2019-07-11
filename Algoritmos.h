@@ -24,6 +24,7 @@ typedef int tipoVertice;
 #include "ColaP.h"
 #include "ConjuntoDeConjuntos.h"
 #include "Diccionario.h"
+#include "Relacion.h"
 
 class Algoritmos {
 	private:
@@ -59,7 +60,7 @@ class Algoritmos {
 		};
 	
 	public:
-		int encontrarMinimo(int tam, vector<bool>& v, vector<int> d);
+		int encontrarMinimo(vector<int> di , Diccionario<tipoVertice> dicc ,Relacion<tipoVertice> r);
 		int pesoMinimo(int[],bool[],int);
 		void prim(Grafo&);
 		void problemaVendedor(Grafo&); //listo :)
@@ -72,9 +73,9 @@ class Algoritmos {
 		void recorridoEnProfundidadR(tipoVertice,Grafo&);
 		void eliminarVerticeNoAislado(Grafo&,tipoVertice);
 		bool iguales(Grafo, Grafo);
-		void kruskal(Grafo g1, Grafo g2);
+		void kruskal(Grafo g1);
 		tipoVertice BuscarEtiqueta(string, Grafo& g);
-
+		
 
 };
 #endif
