@@ -60,11 +60,12 @@ class Algoritmos {
 	
 	public:
 		int encontrarMinimo(int tam, vector<bool>& v, vector<int> d);
-		void dijkstra(Grafo&);
 		int pesoMinimo(int[],bool[],int);
 		void prim(Grafo&);
 		void problemaVendedor(Grafo&); //listo :)
-		void asignarArista(tipoVertice); 
+		void asignarArista(tipoVertice);
+		bool existeArista(tipoVertice v1, tipoVertice v2, Grafo & g);
+
 		void copiarGrafo(Grafo&,Grafo&);
 		bool estaEnLista(Terna*, list<Terna>);
 		void recorridoEnProfundidad(Grafo&);

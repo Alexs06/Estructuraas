@@ -91,10 +91,6 @@ bool Algoritmos::Terna:: operator==(Terna& terna2){
 	return iguales;
 }
 
-void Algoritmos::dijkstra(Grafo& g){
-	
-	
-}	
 
 int Algoritmos::pesoMinimo(int dist[], bool sptSet[], int iterar){
    int min = INT_MAX, min_index;
@@ -107,67 +103,7 @@ int Algoritmos::pesoMinimo(int dist[], bool sptSet[], int iterar){
 }
 
 void Algoritmos::prim(Grafo& grafo){
-	int nVert = grafo.numVertices();
-	string * arregloEtiquetas = new string[grafo.numVertices() ];
-    bool * modificado = new bool[grafo.numVertices()];
-    Grafo minCosto;
-    vector<int> distancias;
-    vector<bool> visitado;
-    int n = grafo.numVertices();
-    int costoTotal = 0;
-    distancias.resize(n);
-    visitado.resize(n);
-    int pivote;
-    Relacion<tipoVertice> R11MinCosto;
-	Relacion<tipoVertice> R11;
-    pair<int, tipoVertice> p;
-    pair<int, tipoVertice> p2;
-    tipoVertice v = grafo.primerVertice();
-    tipoVertice vn;
-    int contador = 0;
-   while(v != 0){
-        visitado[contador] = false;
-        arregloEtiquetas[contador] = grafo.etiqueta(grafo.primerVertice());
-        p = std::make_pair(contador,v);
-        R11.insert(p);
-        vn  = minCosto.agregarVertice(grafo.etiqueta(v));
-        p2 = std::make_pair(contador, vn);
-        R11MinCosto.insert(p2);
-        contador++;
-        v = grafo.siguienteVertice(v);;
-    }
-    for(int i = 1; i <= n -1; i++){
-        if(grafo.adyacentes(R11.at(0), R11.at(i))){
-            distancias[i] = grafo.peso((R11.at(0)), R11.at(i));
-        }
-        else{
-            distancias[i] = INT_MAX;
-        }
-        modificado[i] = false;
-    }
-    for(int i = 1; i <= n -1; i++){
-        pivote = encontrarMinimo(n, visitado, distancias);
-        for(int j = 1; j <= n-1; j++){
-            if(j != pivote){
-            if(grafo.adyacentes(R11.at(pivote), R11.at(j))){
-            if(grafo.peso(R11.at(pivote), R11.at(j)) < distancias[j] && !minCosto.adyacentes(R11MinCosto.at(pivote), R11MinCosto.at(j))){
-                distancias[j] = grafo.peso(R11.at(pivote), R11.at(j));
-                arregloEtiquetas[j] = grafo.etiqueta(R11.at(pivote));
-                minCosto.agregarArista(R11MinCosto.at(pivote), R11MinCosto.at(j),grafo.peso(R11.at(pivote), R11.at(j)));
-            }
-            }
-        }
-        }  
-    };
-    std::cout<<"Arbol de minimo costo"<<std::endl;
-    for(int i = 1; i <= n -1; i++){
-        std::cout<<"arista "<<i<<std::endl;
-        std::cout<<"Vertices: "<<grafo.etiqueta(R11.at(i))<<" y "<<arregloEtiquetas[i]<<std::endl;
-        std::cout<<"Costo : "<<distancias[i]<<std::endl;
-        costoTotal += distancias[i];
-    }
-    std::cout<<"Costo total : "<<costoTotal<<std::endl;
-    minCosto.vaciar();
+	
 }
 
 int Algoritmos::encontrarMinimo(int tam, vector<bool>& v, vector<int> d){ //metodo auxiliar para el algoritmo de Prim
@@ -288,12 +224,19 @@ void Algoritmos::asignarArista(tipoVertice v){
 			costoActual -= g->peso(v,va);
 		}
 		va = g->siguienteVertice(va);
-	}
-	
-	
-	
-	
+	}	
 }
+bool Algoritmos::existeArista(tipoVertice v1, tipoVertice v2, Grafo& g) {
+	
+	bool existe = g.adyacentes(v1, v2);
+	if (existe) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 
 /*Requiere: dos grafos inicializados
 Efecto: dice si dos grafos son iguales, esto significa que tengan los mismos pesos en las aristas
@@ -302,53 +245,46 @@ Modifica: no modifica nada
 */
 bool Algoritmos::iguales(Grafo g1, Grafo g2){
 	bool sonIgual = false;
-		if(g1.numVertices() != g2.numVertices()) {
+	if(g1.numVertices() != g2.numVertices()) {
 			return sonIgual;
-		}
-		else {
-			sonIgual = true;
-			Relacion<tipoVertice> R11;
-			tipoVertice v1 = g1.primerVertice();
-				while (v1 != verticeNulo && sonIgual){
-					tipoVertice v2 = BuscarEtiqueta(g1.etiqueta(v1), g2);
-						if (v2 != verticeNulo){
-						if( g1.numVerticesAdyacentes(v1) == g2.numVerticesAdyacentes(v2)) {
+	}
+	else {
+		sonIgual = true;
+		Relacion<tipoVertice> R11;
+		tipoVertice v1 = g1.primerVertice();
+			while (v1 != verticeNulo && sonIgual){
+				tipoVertice v2 = BuscarEtiqueta(g1.etiqueta(v1), g2);
+					if (v2 != verticeNulo){
+						if( g1.numVerticesAdyacentes(v1) == g2.numVerticesAdyacentes(v2)){
 							R11.agregarRelacion(v1, v2);
 							v1 = g1.siguienteVertice(v1);
-						}
-						else {
+						}else {
+							sonIgual = false;
+							}
+						}else {
 							sonIgual = false;
 						}
-						}
-						else {
-							sonIgual = false;
-						}
-				}
+			}
 			if (sonIgual){
 				v1 = g1.primerVertice();
-			while (v1 != verticeNulo && sonIgual) {
-				tipoVertice va1 = g1.primerVerticeAdyacente(v1);
-			while (va1 != verticeNulo && sonIgual) {
-				//if (g2.existeArista(R11.imagen(v1),R11.imagen(va1))) {
-					if (g1.peso(v1,va1) != g2.peso(R11.imagen(v1),R11.imagen(va1))) {
-						sonIgual = false;
-					}
-					else {
-						va1 = g1.siguienteVerticeAdyacente(v1, va1);
-					}
-				}
-				//else {
-			
+				while (v1 != verticeNulo && sonIgual) {
+					tipoVertice va1 = g1.primerVerticeAdyacente(v1);
+					while (va1 != verticeNulo && sonIgual) {
+						if (existeArista(R11.imagen(v1),R11.imagen(va1),g2)){
+							if (g1.peso(v1,va1) != g2.peso(R11.imagen(v1),R11.imagen(va1))) {
+								sonIgual = false;
+							}else {
+								va1 = g1.siguienteVerticeAdyacente(v1, va1);
+							}
+						}else {
 				 sonIgual = false;
-				//}
-			}
-			v1 = g1.siguienteVertice(v1);
-			//}
-			}
-				
-		}
-		return(sonIgual);
-	}
+							}
+						}
+					v1 = g1.siguienteVertice(v1);
+					}
+				}	
+			}return(sonIgual);
+};
 	
 tipoVertice Algoritmos::BuscarEtiqueta(string e,Grafo& g) {
 	

@@ -11,11 +11,11 @@ class Relacion{
 	
 	public:
 		Relacion(){
-			arreglo = new vector<V>();
+			//arreglo = new vector<V>();
 		}
 		
 		~Relacion(){
-			delete arreglo;
+			
 		}
 		
 		void vaciar(){
